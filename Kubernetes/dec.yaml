@@ -2,9 +2,11 @@ apiVersion: v1
 kind: Pod 
 metadata: 
   name: dec 
-  namespace: prod
+  namespace: prod #add namespace in a declarative way
   labels:
-    env: prod #add namespace in a declarative way
+    env: prod #Environment
+    tier: frontend #Application Tier
+
 spec:
   containers:
     - name: nginx

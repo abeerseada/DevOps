@@ -1,0 +1,21 @@
+apiVersion: apps/v1 
+kind: ReplicaSet
+metadata: #for replicaset
+  name: nginx-rs
+  namespace: prod
+spec:
+  replicas: 3
+  selector: 
+    matchLabels: #L 
+      env: prod #same as in dac.yaml -- same lable 
+      tier: frontend 
+  template:  #for P od 
+    metadata: #from dac.yaml
+      name: dec  
+      labels:
+        env: prod 
+        tier: frontend
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
