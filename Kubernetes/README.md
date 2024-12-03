@@ -62,7 +62,7 @@ Describe namespace
 ```bash 
 kubectl describe namespace <ns-name>
 ```
-`Changes the default namespace to the specified namespace `
+Change the default namespace to the specified namespace 
 ```bash 
 kubectl config set-context --current --namespace=<ns-name>
 ```
@@ -73,7 +73,7 @@ kubectl get cm -n kube-public
 ```
 ---
 # ReplicaSets
-### apiVersion= v1 
+### apiVersion= apps/v1 
 
 ## Why Do We Need Kubernetes Replication? 
 • In simple terms, the ReplicaSets(rs) or Replication Controller(rc) is used to run multiple instances of a single Pod to achieve load balancing and high availability.  
@@ -107,4 +107,49 @@ Remove labels to a Pod
 ```bash 
 kubectl lable pods <pod-name> <lable>-
 ```
+---
 # Deployment
+### apiVersion= apps/v1 
+*A deployment is a higher abstraction that manages one or more ReplicaSets.*
+*Scaling up and down of the application.*  
+*Roll out and Rollback.*  
+*No downtime when deploying the newer version of the application.*  
+*Different strategies of deployment.*  
+
+Create a new Deployment
+```bash 
+kubectl create deployment ‹deploy-name> -image=nginx --replicas=3
+```
+List all Deployments
+```bash
+kubectl get deployment
+```
+Get more informatlon about the specified Deployment
+```bash
+kubectl describe deployment <deployment-name>
+```
+Delete the specified Deployment
+```bash
+kubectl delete deployment <deployment-name>
+```
+---
+# Services
+### apiVersion= v1 
+*an abstract way to expose an applicatlon running on a set of Pods as a network service to other applications or to the external world.*
+*A service groups a set of pods together and makes them accessible.*  
+*Services in Kubernetes aim to solve connectivity issues.*  
+*K8s services have fixed IP addresses.*  
+*IP Address assignments to a K8s service can happen dynamically (by K8s) or statically.*  
+*K8s services match pods using Labels and Selectors.*  
+Create a service for a deployment
+```bash 
+kubectl expose deployment < deploy-name> --port=5000 --target-port=80
+```
+Get more information about the specified Services
+```bash 
+kubectl describe svc <svc-name>
+```
+Deletes the specified Services
+```bash
+kubectl delete svc ‹svc-name>
+```

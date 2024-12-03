@@ -1,0 +1,21 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: deploy
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      env: prod
+      tier: frontend
+  template:
+    metadata:  
+      namespace: prod 
+      labels:
+        env: prod 
+        tier: frontend 
+    spec:
+      containers:
+        - name: nginx
+          image: nginx	    
+        
