@@ -118,7 +118,7 @@ kubectl lable pods <pod-name> <lable>-
 
 Create a new Deployment
 ```bash 
-kubectl create deployment ‹deploy-name> -image=nginx --replicas=3
+kubectl create deployment ‹deploy-name> --image=nginx --replicas=3
 ```
 List all Deployments
 ```bash
