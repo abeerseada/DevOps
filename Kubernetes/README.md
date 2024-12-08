@@ -114,7 +114,23 @@ kubectl lable pods <pod-name> <lable>-
 *Scaling up and down of the application.*  
 *Roll out and Rollback.*  
 *No downtime when deploying the newer version of the application.*  
-*Different strategies of deployment.*  
+*Different strategies of deployment.* 
+
+**!!!!!! Exam tip !!!!!**
+*Generate Deployment YAML file (-o yaml). Don't create it(--dry-run)* 
+
+```bash 
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml
+```
+Generate Deployment YAML file (-o yaml). Don’t create it(–dry-run) and save it to a file.
+
+```bash
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml
+```
+Create a Service named nginx of type NodePort to expose pod nginx's port 80 on port 30080 on the nodes:
+```bash
+kubectl expose pod nginx --type=NodePort --port=80 --name=nginx-service --dry-run=client -o yaml
+```
 
 Create a new Deployment
 ```bash 
