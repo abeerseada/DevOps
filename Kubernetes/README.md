@@ -193,3 +193,56 @@ tolerations:
   value: "value"
   effect: "NoSchedule"
 ```
+---
+# NodeSelectors
+```bash
+kubectl label nodes <node-name> <lable-key>=<lable-value>
+```
+add a nodeSelector to a pod (*spec section*):
+```yaml
+nodeSelector:
+    key: value
+```    
+---
+# Node Affinity
+```yaml
+affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: color
+                    operator: In
+                    values:
+                      - blue
+```
+types :requiredDuringSchedulingIgnoredDuringExecution,preferredDuringSchedulingIgnoredDuringExecution
+ex:
+```yaml
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchLabels:
+            color: blue
+```            
+---
+# Resources
+```yaml
+resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          imagePullPolicy: Always
+```
+| Item              | **ResourceQuota**                                       | **LimitRange**                                              |
+|-------------------|---------------------------------------------------------|-------------------------------------------------------------|
+| **Scope**         | Applied at the **namespace** level                      | Applied at the **container** level within the **pod**        |
+| **Purpose**       | Defines maximum resource usage across all objects in a **namespace**. | Defines the minimum and maximum resources for each **container**. |
+| **Resources**     | Can define total limits for **pods**, **services**, as well as **CPU** and **Memory**. | Defines **requests** and **limits** for **CPU** and **Memory** at the container level. |
+| **Scope of Impact** | Affects all objects within the **namespace**.           | Affects only **containers** within **pods**.                 |
+
