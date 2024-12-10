@@ -31,6 +31,10 @@ Get pods in a specific namespace
 ```bash 
 kubectl get pods -n <ns-name>
 ```
+Get pods in a specific lable (env=prod)
+```bash
+kubectl get pods --selector env=prod
+```
 ---
 # Namespaces
 ### apiVersion= v1
@@ -168,4 +172,24 @@ kubectl describe svc <svc-name>
 Deletes the specified Services
 ```bash
 kubectl delete svc ‹svc-name>
+```
+---
+# Taint and Tolerations
+Taint:
+```bash 
+kubectl taint nodes node1 key=value:taint-effect
+```
+taint-effect:NoSchedule,PreferNoSchedule,NoExecute
+to remove a taint :
+```bash 
+kubectl taint nodes node1 key=value:taint-effect-
+```
+Toleration:
+*added to spec section!*
+```yaml
+tolerations:
+- key: "key"
+  operator: "Equal"
+  value: "value"
+  effect: "NoSchedule"
 ```
