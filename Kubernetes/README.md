@@ -242,7 +242,47 @@ resources:
 | Item              | **ResourceQuota**                                       | **LimitRange**                                              |
 |-------------------|---------------------------------------------------------|-------------------------------------------------------------|
 | **Scope**         | Applied at the **namespace** level                      | Applied at the **container** level within the **pod**        |
-| **Purpose**       | Defines maximum resource usage across all objects in a **namespace**. | Defines the minimum and maximum resources for each **container**. |
+| **Purpose**       | Defines maximum resource usage across all objects in a **namespace**. | Defines the minimum and maximum resources for each **container**. |   
 | **Resources**     | Can define total limits for **pods**, **services**, as well as **CPU** and **Memory**. | Defines **requests** and **limits** for **CPU** and **Memory** at the container level. |
 | **Scope of Impact** | Affects all objects within the **namespace**.           | Affects only **containers** within **pods**.                 |
+
+---
+# Scheduler
+Deploy Additional Scheduler as A Pod:-  
+- frist create a config file :
+```yaml
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+profiles:
+  - schedulerName: my-scheduler
+  leaderElecation:
+    leaderElect: true
+    reasourceNamespace: kube-system 
+    reasourceName: lock-object-my-scheduler
+```
+- then create a pod definition file:
+```yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-custom-scheduler
+  namespace: kube-system
+spec:
+  containers:
+    - command:
+      - kube-scheduler
+      - --address=127.0.0.1
+      - --kubeconfig=/etc/kubernetes/scheduler.conf #the path to the config file
+      - --config=/etc/kubernetes/my-custom-scheduler.yaml
+      - --leader-elect=true
+      image: k8s.gcr.io/kube-scheduler-amd64:v1.11.3
+      name: kube-scheduler
+      - --scheduler-name=my-custom-scheduler
+      - --lock-object-name=my-custom-scheduler
+```
+Deploy Additional Scheduler:
+```bash
+wget https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kube-scheduler
+``` 
+[https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/] (Documentation)
 
