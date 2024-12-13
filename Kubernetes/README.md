@@ -310,3 +310,34 @@ View Scheduler Logs:
 ```bash 
 kubectl logs my-custom-scheduler --name-space=kube-system
 ```
+---
+# Metrics Server
+```bash 
+git clone https://github.com/kubernetes-incubator/metrics-server.git
+```
+get top node
+```bash
+kubectl top node
+```
+---
+# Rollout
+1. Check the status of a rollout
+```bash
+kubectl rollout status deployment/<deployment-name>
+```
+2. Undo a rollout (rollback to the previous revision)
+```bash
+kubectl rollout undo deployment/<deployment-name>
+```
+3. View rollout history
+```bash
+kubectl rollout history deployment/<deployment-name>
+```
+4. Pause a rollout
+```bash
+kubectl rollout pause deployment/<deployment-name>
+```
+5. Resume a rollout
+```bash
+kubectl rollout resume deployment/<deployment-name>
+```
