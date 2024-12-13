@@ -286,3 +286,27 @@ wget https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux
 ``` 
 [https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/] (Documentation)
 
+View Schedulers:
+```bash
+kubectl get pods --namespace=kube-system
+```
+Use Custom Scheduler in a pod:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+    - image: nginx
+      name: nginx
+  schedulerName: my-custom-scheduler #add it in pod definition file
+```
+View Events:
+```bash 
+kubectl get events
+```
+View Scheduler Logs:
+```bash 
+kubectl logs my-custom-scheduler --name-space=kube-system
+```
