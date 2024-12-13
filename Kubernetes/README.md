@@ -452,6 +452,12 @@ env:
       name: app-secret
       key: DB_Password
 ```
+envFrom:
+```yaml
+envFrom:
+    - secretRef:
+        name: db-secret
+```        
 volums :
 ```yaml
 volumes:
@@ -497,3 +503,19 @@ describe secrets
 ```bash
 kubectl describe secrets
 ```
+set a secret to a deployment
+```bash
+kubectl set env deployment/myapp DB_USERNAME=admin DB_PASSWORD=supersecret
+```
+another way
+```bash
+kubectl set env deployment myapp --from=<secret-name>
+```
+[https://www.youtube.com/watch?v=MTnQW9MxnRI] (Secret Store CSI Driver Tutorial | Kubernetes Secrets )
+---
+# Multi Container PODs
+Practice Test - Multi Container PODs
+ ```bash
+ kubectl -n elastic-stack exec -it app -- cat /log/app.log
+ ```
+===
