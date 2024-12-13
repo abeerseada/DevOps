@@ -341,3 +341,159 @@ kubectl rollout pause deployment/<deployment-name>
 ```bash
 kubectl rollout resume deployment/<deployment-name>
 ```
+---
+# Command and Args
+```yaml
+apiVersion: v1 
+kind: Pod 
+metadata:
+  name: ubuntu-sleeper-2 
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu
+    command:
+      - "sleep"
+      - "5000"
+```      
+---
+# ConfigMap
+### apiVersion: v1
+declarative
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_ENV: "production"
+  DB_HOST: "db-service"
+  DB_PORT: "5432"
+```
+add the configmap to pod definition file
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+spec:
+  containers:
+  - name: app-container
+    image: ubuntu
+    envFrom: #is a list
+    - configMapRef:
+        name: app-config
+```     
+the POD to use only the APP_COLOR key from the newly created ConfigMap   
+```yaml 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-color
+  name: webapp-color
+  namespace: default
+spec:
+  containers:
+  - env:
+    - name: APP_COLOR
+      valueFrom:
+        configMapKeyRef:
+          name: webapp-config-map
+          key: APP_COLOR
+    image: kodekloud/webapp-color
+    name: webapp-color
+```    
+imperative
+```bash
+kubectl create configmap app-config --from-literal=APP_ENV=production --from-literal=DB_HOST=db-service --from-literal=DB_PORT=5432
+```
+or from txt file 
+```bash
+kubectl create configmap app-config --from-file=config.txt
+```
+get configmap
+```bash
+kubectl get configmaps
+```
+describe configmap 
+```bash
+kubectl describe configmaps
+```
+---
+# Secrets
+### apiVersion: v1
+imperative:
+```bash
+kubectl create secret generic my-secret --from-literal=username=admin --from-literal=password=supersecret
+```
+from a file
+```bash 
+kubectl create secret generic my-cert-secret --from-file=cert.crt=/path/to/certificate.crt --from-file=key.key=/path/to/private.key
+```
+env:
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+data:
+  username: YWRtaW4=   # (Base64 encoded string for "admin")
+  password: c3VwZXJzZWNyZXQ=  # (Base64 encoded string for "supersecret")
+```
+single env :
+```yaml 
+env:
+- name: DB_Password
+  valueFrom:
+    secretKeyRef:
+      name: app-secret
+      key: DB_Password
+```
+volums :
+```yaml
+volumes:
+- name: app-secret-volume
+  secret:
+    secretName: app-secret
+```
+add it to pod 
+```yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp-pod
+spec:
+  containers:
+  - name: webapp-container
+    image: my-app-image
+    env:
+    - name: DB_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: my-secret    
+          key: username 
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: my-secret    
+          key: password 
+```
+encode secrets
+```bash 
+echo -n "abeer" | base64
+```
+decode secrets
+```bash
+echo -n "YWJlZXI=" | base64 --decode
+```
+get secrets
+```bash
+kubectl get secrets
+```
+describe secrets 
+```bash
+kubectl describe secrets
+```
