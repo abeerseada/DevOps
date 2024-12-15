@@ -651,3 +651,41 @@ systemctl daemon-reload
 systemctl restart kubelet
 ```
 Type exit or logout or enter CTRL + d to go back to the controlplane node.  
+---
+# Backup and Restore Methods
+ETCD 
+intall 
+```bash 
+sudo apt update
+sudo apt install etcd -y
+sudo systemctl start etcd
+sudo systemctl enable etcd
+export ETCDCTL_API=3 #to use snapshot
+```
+Where is the ETCD Certificate file located? **/etc/kubernetes/pki/etcd/server.crt**
+Backup and Restore Methods? **/etc/kubernetes/pki/etcd/ca.crt**
+Take a snapshot of the ETCD database using the built-in snapshot functionality.Store the backup file at location /opt/snapshot-pre-boot.db
+```bash
+ETCDCTL_API=3 etcdctl --endpoints=https://[127.0.0.1]:2379 \
+--cacert=/etc/kubernetes/pki/etcd/ca.crt \
+--cert=/etc/kubernetes/pki/etcd/server.crt \
+--key=/etc/kubernetes/pki/etcd/server.key \
+```
+restore snapshot:
+```bash
+ETCDCTL_API=3 etcdctl  --data-dir /var/lib/etcd-backup \
+snapshot restore /opt/snapshot-pre-boot.db
+```
+Next, update the /etc/kubernetes/manifests/etcd.yaml:   
+We have now restored the etcd snapshot to a new path on the controlplane - /var/lib/etcd-from-backup, so, the only change to be made in the YAML file, is to change the hostPath for the volume called etcd-data from old directory (/var/lib/etcd) to the new directory (/var/lib/etcd-from-backup).
+```bash
+ vi /etc/kubernetes/manifests/etcd.yaml 
+```
+```yaml
+  volumes:
+  - hostPath:
+      path: /var/lib/etcd-backup
+      type: DirectoryOrCreate
+    name: etcd-data
+```
+
