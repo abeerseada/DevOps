@@ -581,5 +581,6 @@ kubectl cordon <node-name>
 What is the current version of the cluster?  
 run 
 ```bash 
-kubectl get nodes``` 
+kubectl get nodes
+``` 
 and look at the **VERSION**
