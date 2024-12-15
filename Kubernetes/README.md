@@ -654,7 +654,7 @@ Type exit or logout or enter CTRL + d to go back to the controlplane node.
 ---
 # Backup and Restore Methods
 ETCD 
-intall 
+install 
 ```bash 
 sudo apt update
 sudo apt install etcd -y
@@ -688,4 +688,24 @@ We have now restored the etcd snapshot to a new path on the controlplane - /var/
       type: DirectoryOrCreate
     name: etcd-data
 ```
-
+---
+# clusters
+get clusters:
+```bash
+kubectl config get-clusters 
+```
+switch the context to cluster1:
+```bash
+kubectl config use-context cluster1
+```
+```bash 
+ssh cluster2-controlplane ps -ef | grep etcd
+```
+to get cert, endpoints, casert and key
+```bash
+kubectl describe  pods -n kube-system etcd-cluster1-controlplane  | grep pki
+```
+!!!! ==> scp is a Secure Copy Protocol by ssh 
+```bash
+chown -R [OWNER][:GROUP] /path/to/directory
+```
