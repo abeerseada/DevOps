@@ -636,7 +636,7 @@ Based on the version information displayed by apt-cache madison, it indicates th
 ```bash
 apt-get install kubeadm=1.31.0-1.1
 ```
-# Upgrade the node 
+Upgrade the node 
 ```bash
 kubeadm upgrade node  
 ```
