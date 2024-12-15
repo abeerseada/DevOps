@@ -573,14 +573,81 @@ Uncordon node
 ```bash
 kubectl uncordon <node-name>
 ```
-*pods will not reschudeled in the uncordon node only the new created ones!*
+*pods will not reschudeled in the uncordon node only the new created ones!*  
 Cordoning node (unschedulable):
 ```bash
 kubectl cordon <node-name>
 ```
-What is the current version of the cluster?  
+What is the current version of the cluster?   
 run 
 ```bash 
 kubectl get nodes
 ``` 
 and look at the **VERSION**
+What is the latest version available for an upgrade with the current version of the kubeadm tool installed?     
+Run the ```kubeadm upgrade plan``` command
+**update kubeadm**
+Use any text editor you prefer to open the file that defines the Kubernetes apt repository.   
+```bash
+vim /etc/apt/sources.list.d/kubernetes.list
+```
+Update the version in the URL to the next available minor release, i.e v1.31.  
+```bash
+apt update
+apt-cache madison kubeadm
+```
+then 
+```bash 
+apt-get install kubeadm=1.31.0-1.1
+```
+Run the following command to upgrade the Kubernetes cluster:  
+```bash
+kubeadm upgrade plan v1.31.0
+
+kubeadm upgrade apply v1.31.0
+```
+Now, upgrade the Kubelet version. Also, mark the node (in this case, the "controlplane" node) as schedulable.  
+```bash
+apt-get install kubelet=1.31.0-1.1
+```
+Run the following commands to refresh the systemd configuration and apply changes to the Kubelet service:  
+```bash
+systemctl daemon-reload
+
+systemctl restart kubelet
+```
+[https://v1-31.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/#call-kubeadm-upgrade]
+
+## upgrade worker node
+On the node01 node, run the following commands:  
+**If you are on the controlplane node, run ssh node01 to log in to the node01.**  
+Use any text editor you prefer to open the file that defines the Kubernetes apt repository.  
+```bash
+vim /etc/apt/sources.list.d/kubernetes.list
+```
+Update the version in the URL to the next available minor release, i.e v1.31.  
+After making changes, save the file and exit from your text editor. Proceed with the next instruction.
+```bash
+apt update
+
+apt-cache madison kubeadm
+```
+Based on the version information displayed by apt-cache madison, it indicates that for Kubernetes version 1.31.0, the available package version is 1.31.0-1.1. Therefore, to install kubeadm for Kubernetes v1.31.0, use the following command:  
+```bash
+apt-get install kubeadm=1.31.0-1.1
+```
+# Upgrade the node 
+```bash
+kubeadm upgrade node  
+```
+Now, upgrade the Kubelet version.  
+```bash
+apt-get install kubelet=1.31.0-1.1
+```
+Run the following commands to refresh the systemd configuration and apply changes to the Kubelet service:  
+```bash
+systemctl daemon-reload
+
+systemctl restart kubelet
+```
+Type exit or logout or enter CTRL + d to go back to the controlplane node.  
