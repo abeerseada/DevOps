@@ -2,10 +2,6 @@
 ```bash
 export PATH=$PATH:/path/to/your/directory
 ```
-add excute permission
-```bash
-chmod +x ~/mycommand
-```
 ```shell
 price=$(( $1 * $2 ))
 
@@ -150,13 +146,6 @@ do
 
 done
 ```
-```bash
-sed 's/jpeg/jpg/g'
-```
-s/: Represents the substitute command.  
-old: The substring to search for (in this case, .jpeg).  
-new: The replacement substring (in this case, .jpg).  
-g: Global flag, which means replace all occurrences in the input.  
 ---
 ## While
 ```bash
@@ -189,3 +178,41 @@ esac
 ## Exit code
 what is the exit status of the command uptime ?  
 Run: **echo $?** immediately after running the command uptime  
+---
+# Functions
+Defining a Function:
+```bash
+function_name() {
+    # Commands to execute
+    echo "This is a function."
+}
+```
+OR
+```bash
+function function_name {
+    # Commands to execute
+    echo "This is another way to define a function."
+}
+```
+---
+## tips
+<<- (Indented Here Document)
+```bash
+cat > file.txt <<- EOF
+	Line 1
+		Line 2
+	Line 3
+EOF
+```
+add excute permission
+```bash
+chmod +x ~/mycommand
+```
+
+```bash
+sed -i 's/jpeg/jpg/g'
+```
+s/: Represents the substitute command.  
+old: The substring to search for (in this case, .jpeg).  
+new: The replacement substring (in this case, .jpg).  
+g: Global flag, which means replace all occurrences in the input.  
