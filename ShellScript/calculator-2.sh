@@ -1,4 +1,5 @@
 # using case and while loop
+#!/bin/bash
 while true
 do
 echo "1. Add"
@@ -28,7 +29,7 @@ case $choice in
     6)         break ;;
     5) read -p "Enter Number1: " number1
         read -p "Enter Number2: " number2
-        echo Answer=$(echo " ($number1 + $number2) / 2" | bc -l )    
+        echo Answer=$(echo " ($number1 + $number2) / 2" | bc -l )    ;;
     *) contiue ;;
 esac
 

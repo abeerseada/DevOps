@@ -157,3 +157,35 @@ s/: Represents the substitute command.
 old: The substring to search for (in this case, .jpeg).  
 new: The replacement substring (in this case, .jpg).  
 g: Global flag, which means replace all occurrences in the input.  
+---
+## While
+```bash
+while [ condition ]
+do
+    # Commands to execute while the condition is true
+done
+```
+---
+## Case
+```bash 
+case $variable in
+    pattern1)
+        # Commands to execute if $variable matches pattern1
+        ;;
+    pattern2)
+        # Commands to execute if $variable matches pattern2
+        ;;
+    *)
+        # Commands to execute if no patterns match
+        ;;
+esac
+```
+---
+## Shebang
+```bash
+#!/bin/bash
+```
+---
+## Exit code
+what is the exit status of the command uptime ?  
+Run: **echo $?** immediately after running the command uptime  
