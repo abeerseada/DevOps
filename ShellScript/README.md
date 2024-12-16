@@ -19,6 +19,8 @@ sum=$(( num1 + num2 + num3 ))
 average=$(echo "$sum /3 " | bc -l)
 echo $average
 ```
+---
+## Conditions
 
 | Operator      | Description                                                | Example                     |
 |---------------|------------------------------------------------------------|-----------------------------|
@@ -42,4 +44,21 @@ echo $average
 | `||`          | Logical OR                                               | `[ $a -eq 1 ] || [ $b -eq 2 ]`|
 | `!`           | Logical NOT                                              | `[ ! -e file.txt ]`          |
 
+
+| Operator  | Description                                   | Example                |
+|------------|---------------------------------------------|------------------------|
+| `=`        | Compares if two strings are equal              | `[ "$a" = "$b" ]`       |
+| `!=`       | Compares if two strings are not equal          | `[ "$a" != "$b" ]`      |
+| `-z`       | Checks if a string is empty                    | `[ -z "$string" ]`      |
+| `-n`       | Checks if a string is not empty                | `[ -n "$string" ]`      |
+| `*`        | Checks if a string matches a pattern           | `[ "$string" == *pattern* ]` |
+
+| Operator  | Description                                   | Example                |
+|------------|---------------------------------------------|------------------------|
+| `-e`       | Checks if a file exists                       | `[ -e file.txt ]`       |
+| `-f`       | Checks if a file exists and is a regular file  | `[ -f file.txt ]`       |
+| `-d`       | Checks if a directory exists                  | `[ -d dir_name ]`       |
+| `-r`       | Checks if a file is readable                   | `[ -r file.txt ]`       |
+| `-w`       | Checks if a file is writable                   | `[ -w file.txt ]`       |
+| `-x`       | Checks if a file is executable                 | `[ -x file.txt ]`       |
 
