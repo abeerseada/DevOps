@@ -153,7 +153,7 @@ done
 ```bash
 sed 's/jpeg/jpg/g'
 ```
-s/: Represents the substitute command.
-old: The substring to search for (in this case, .jpeg).
-new: The replacement substring (in this case, .jpg).
-g: Global flag, which means replace all occurrences in the input.
+s/: Represents the substitute command.  
+old: The substring to search for (in this case, .jpeg).  
+new: The replacement substring (in this case, .jpg).  
+g: Global flag, which means replace all occurrences in the input.  
