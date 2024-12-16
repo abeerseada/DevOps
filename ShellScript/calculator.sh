@@ -1,3 +1,4 @@
+#using while loop and if condition
 while true
 do
   echo "1. Add"
