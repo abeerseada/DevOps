@@ -30,7 +30,7 @@ sudo apt-get install jenkins
 Installation of Java
 ```bash
 sudo apt update
-sudo apt install fontconfig openjdk-17-jre
+sudo apt install fontconfig openjdk-17-jre -y
 java -version
 ```
 Restarting Jenkins Service:
