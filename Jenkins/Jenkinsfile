@@ -1,0 +1,27 @@
+pipline {
+    agent any 
+    stages{
+        stage ('Building')
+        {
+            agent{docker 'ubuntu:alpine'}
+            steps{
+                sh 'mnv clean package'
+            }
+        }
+        stage('unit testing')
+        {
+            steps{
+                script {junit 'target/surefire-reports/*xml'}
+            }
+
+        }
+        stage('Deployment')
+        {
+            when { expression{branch == 'main'}}
+            steps{
+                sh 'deploy.sh'
+            }
+
+        }
+    }
+}
