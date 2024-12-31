@@ -44,28 +44,36 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                sh 'mvn clean compile'
+                dir('my-app') { // Change this to match your subdirectory
+                    sh 'mvn clean compile'
+                }
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'mvn test'
+                dir('my-app') { // Ensure it's pointing to the correct directory
+                    sh 'mvn test'
+                }
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging the application...'
-                sh 'mvn package'
+                dir('my-app') {
+                    sh 'mvn package'
+                }
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying the application...'
-                sh 'mvn deploy'
+                dir('my-app') {
+                    sh 'mvn deploy'
+                }
             }
         }
     }
@@ -84,3 +92,4 @@ pipeline {
         }
     }
 }
+
