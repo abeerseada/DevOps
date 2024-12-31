@@ -46,3 +46,16 @@ Run the below command to check logs for Jenkins.
 ```bash
 sudo journalctl -xeu jenkins.service 
 ```
+---
+## change Jenkins port 
+stop Jenkins 
+```sh 
+brew services stop jenkins-lts
+```
+```sh
+sudo nano /opt/homebrew/opt/jenkins-lts/homebrew.mxcl.jenkins-lts.plist
+```
+next change port, then restart Jenkins
+```sh
+brew services restart jenkins-lts
+```
