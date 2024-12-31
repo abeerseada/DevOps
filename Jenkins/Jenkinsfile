@@ -1,27 +1,86 @@
-pipline {
-    agent any 
-    stages{
-        stage ('Building')
-        {
-            agent{docker 'ubuntu:alpine'}
-            steps{
-                sh 'mnv clean package'
+// pipline {
+//     agent any 
+//     stages{
+//         stage ('Building')
+//         {
+//             agent{docker 'ubuntu:alpine'}
+//             steps{
+//                 sh 'mnv clean package'
+//             }
+//         }
+//         stage('unit testing')
+//         {
+//             steps{
+//                 script {junit 'target/surefire-reports/*xml'}
+//             }
+
+//         }
+//         stage('Deployment')
+//         {
+//             when { expression{branch == 'main'}}
+//             steps{
+//                 sh 'deploy.sh'
+//             }
+
+//         }
+//     }
+// }
+pipeline {
+    agent any
+
+    environment {
+        MAVEN_HOME = tool name: 'M3', type: 'maven'
+        PATH = "${env.MAVEN_HOME}/bin:${env.PATH}"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo 'Checking out the code...'
+                checkout scm
             }
         }
-        stage('unit testing')
-        {
-            steps{
-                script {junit 'target/surefire-reports/*xml'}
-            }
 
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+                sh 'mvn clean compile'
+            }
         }
-        stage('Deployment')
-        {
-            when { expression{branch == 'main'}}
-            steps{
-                sh 'deploy.sh'
-            }
 
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging the application...'
+                sh 'mvn package'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                sh 'mvn deploy'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            junit '**/target/surefire-reports/*.xml'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
