@@ -59,3 +59,6 @@ next change port, then restart Jenkins
 ```sh
 brew services restart jenkins-lts
 ```
+```sh
+cd /Users/abeerabdelhameed/.jenkins/workspace/ 
+```
