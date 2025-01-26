@@ -19,6 +19,14 @@ or install from requirements.txt if available
 ```sh
 pip install -r requirements.txt
 ```
+uninstall
+```sh 
+pip uninstall flask
+```
+upgrade 
+```sh
+pip install flask --upgrade
+```
 
 ```sh
 python3 app2.py
