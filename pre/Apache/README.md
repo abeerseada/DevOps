@@ -177,5 +177,34 @@ Check the Apache logs for more details:
   ```
 
 ---
+# Apache Tomcat
+```sh
+cd ~/Downloads\n
+tar xvf apache-tomcat-10.*.tar.gz\n
+cd apache-tomcat-10.1.34/bin/
+./startup.sh
+```
+**http://localhost:8080/**
+change port: 
+```sh
+sudo vi ./conf/server.xml
+```
+```xml
+<Connector port="8080" protocol="HTTP/1.1"
+           connectionTimeout="20000"
+           redirectPort="8443" />
+```
+then restart:
+```sh 
+./shutdown.sh
+./startup.sh
+```
+***http://localhost:8081***
+---
+### kodekloude
+We have downloaded sample war file under /opt/sample.war. It is simple Hello world application. Set it for apache tomcat to serve.
+Run: **cd /opt/ ; sudo mv /opt/sample.war /opt/apache-tomcat-11/webapps/**
+To confirm Hello world content, run curl **http://localhost:9090/sample/index.html**
 
-Let me know if you need further clarification or additional configurations!
+Which log file will show the logs for extracting war content into tomcat webapps directory?
+Logs will be under extracted tomcat package logs directory. You can check content of each log or run grep command as **sudo sh -c 'grep sample.war /opt/apache-tomcat-11/logs/*'**

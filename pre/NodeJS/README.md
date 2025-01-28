@@ -89,3 +89,17 @@ npm init -y
 npm install express
 node app.js
 ```
+install dependencies
+```sh 
+sudo npm install
+```
+install pm2 
+```sh
+sudo npm install pm2@latest -g
+```
+Run app with pm2 and observe the output in console
+```sh
+pm2 start app.js
+```
+Run app with pm2 but with 4 forks. observe the output in console:
+Run **pm2 delete app.js** to delete pm2 fork. Then run **pm2 start app.js -i 4**
