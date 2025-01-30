@@ -179,6 +179,54 @@ update DB
 ```bash
 updatedb
 ```
+---
+## Grep
+
+
+### **Basic syntax:**
+
+```bash
+grep [options] "pattern" filename
+```
+
+### **Options:**
+
+- `-i` → Case-insensitive search.
+- `-v` → Invert match (exclude lines that match).
+- `-r` → Recursive search through directories.
+- `-n` → Show line numbers.
+- `-l` →	Show only filenames with matches.
+- `-c` →	Count the number of matches in each file.
+- `-w` →	Match whole words only.
+- `-A [num]` →	Show [num] lines after a match.
+- `-B [num]` →	Show [num] lines before a match.
+- `-C [num]` →	Show [num] lines after and before a match.
+
+### **Example:**
+
+```bash
+grep "error" logfile.txt
+```
+
+✅ Finds occurrences of "error" in `logfile.txt`.
+
+```bash
+grep -ri "critical" /var/log/
+```
+
+✅ Recursively searches for "critical" in `/var/log/`.
+
+---
+
+## **📌 Commonly Used ****************`grep`**************** Commands**
+
+| **Command**               | **Description**                  |
+| ------------------------- | -------------------------------- |
+| `grep "text" file.txt`    | Search for "text" in `file.txt`. |
+| `grep -i "text" file.txt` | Case-insensitive search.         |
+| `grep -v "text" file.txt` | Exclude lines containing "text". |
+| `grep -r "text" /path/`   | Recursively search in `/path/`.  |
+| `grep -n "text" file.txt` | Show line numbers for matches.   |
 
 ---
 ### RPM Commands 
