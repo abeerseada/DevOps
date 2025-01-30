@@ -16,3 +16,21 @@ mysql_secure_installation
    - Disallow root login remotely.
    - Remove test databases.
    - Reload privilege tables.
+
+Connect to MySQL:
+```bash
+mysql -u root -p
+```
+Check MySQL Status:
+```bash
+brew services list
+```
+Stop or Restart MySQL:  
+```bash
+brew services stop mysql
+brew services restart mysql
+```
+Uninstall MySQL (If Needed):
+```bash
+brew uninstall mysql
+```

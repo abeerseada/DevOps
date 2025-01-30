@@ -1,12 +1,187 @@
 # Linux
+---
 
+### File size
+```bash
+du -sh file.txt
+```
+---
+# **🔹 `tar` Command in Linux**
+
+The `tar` command (**Tape Archive**) is used in Linux to **create, extract, and manage archive files**. It is commonly used to bundle multiple files into a single `.tar` archive, optionally compressing them using `gzip` or `bzip2`.
+
+---
+
+## **✅ 1️⃣ Creating a `.tar` Archive**
+
+### **Basic syntax:**
+```bash
+tar -cf archive.tar file1 file2 directory/
+```
+
+### **Options:**
+- `-c` → **Create** a new archive.
+- `-f archive.tar` → Name of the output archive file.
+- `file1 file2 directory/` → Files or directories to include in the archive.
+
+### **Example:**
+```bash
+tar -cf backup.tar /home/user/Documents
+```
+✅ This creates `backup.tar` containing the `Documents` folder.
+
+---
+
+## **✅ 2️⃣ Listing Contents of an Archive**
+
+```bash
+tar -tf archive.tar
+```
+
+- `-t` → **List** files inside an archive.
+- `-f archive.tar` → Specify which archive to inspect.
+
+### **Example:**
+```bash
+tar -tf backup.tar
+```
+✅ Lists all files inside `backup.tar`.
+
+---
+
+## **✅ 3️⃣ Extracting a `.tar` Archive**
+
+```bash
+tar -xf archive.tar
+```
+
+- `-x` → **Extract** files from the archive.
+- `-f archive.tar` → Specify which archive to extract.
+
+### **Example:**
+```bash
+tar -xf backup.tar
+```
+✅ Extracts all files from `backup.tar` in the **current directory**.
+
+---
+
+## **✅ 4️⃣ Creating a Compressed Archive (`.tar.gz` or `.tar.bz2`)**
+
+| Compression | Command | Description |
+|------------|---------|-------------|
+| **gzip (`.tar.gz`)** | `tar -czf archive.tar.gz file1` | Compress using gzip. |
+| **bzip2 (`.tar.bz2`)** | `tar -cjf archive.tar.bz2 file1` | Compress using bzip2. |
+| **xz (`.tar.xz`)** | `tar -cJf archive.tar.xz file1` | Compress using xz (better compression). |
+
+### **Example:**
+```bash
+tar -czf backup.tar.gz /home/user/Documents
+```
+✅ Creates a **compressed archive** using gzip.
+
+---
+
+## **✅ 5️⃣ Extracting a Compressed Archive**
+
+| Archive Type | Extraction Command |
+|-------------|------------------|
+| `.tar.gz` | `tar -xzf archive.tar.gz` |
+| `.tar.bz2` | `tar -xjf archive.tar.bz2` |
+| `.tar.xz` | `tar -xJf archive.tar.xz` |
+
+### **Example:**
+```bash
+tar -xzf backup.tar.gz
+```
+✅ Extracts `backup.tar.gz` in the **current directory**.
+
+---
+
+## **✅ 6️⃣ Extract to a Specific Directory**
+
+```bash
+tar -xf archive.tar -C /path/to/destination/
+```
+
+- `-C /path/to/destination/` → Extracts files to a **specific directory**.
+
+---
+
+## **📌 Commonly Used `tar` Commands**
+
+| **Command** | **Description** |
+|------------|----------------|
+| `tar -cf archive.tar file1 file2` | Create a `.tar` archive. |
+| `tar -tf archive.tar` | List files inside an archive. |
+| `tar -xf archive.tar` | Extract a `.tar` archive. |
+| `tar -czf archive.tar.gz file1` | Create a compressed `.tar.gz` archive. |
+| `tar -xzf archive.tar.gz` | Extract a `.tar.gz` archive. |
+| `tar -czvf archive.tar.gz file1` | Create `.tar.gz` with **verbose output**. |
+| `tar -tvf archive.tar` | List contents of a `.tar` archive in **detailed format**. |
+
+---
+
+## **🚀 Summary**
+
+- `tar` is used to **create, extract, and manage archives**.
+- Use `-c` to create, `-x` to extract, `-t` to list contents.
+- Combine with **gzip (`-z`)**, **bzip2 (`-j`)**, or **xz (`-J`)** for compression.
+---
+
+### Bash promt
 ```bash
 PROJECT=MERCURY
 bob@caleston-lp10:~$ echo 'export PROJECT=MERCURY' >> /home/bob/.profile
 echo 'alias up=uptime' >> /home/bob/.profile 
+PS1='[\d] \u@\h :\w$'
+echo "PS1='[\d] \u@\h :\w$'" >> /home/bob/.profile
+```
+---
+### kernel
+```bash
+uname -r #kernel version
+lspci # Lists all PCI devices, including graphics cards, network adapters, and other hardware components.
+lsblk  #Displays information about storage devices and partitions, including mounted file systems.
+dmesg #Shows kernel messages, useful for debugging hardware issues and boot logs
+lscpu #Displays detailed information about the CPU (processor) in your system. Useful for performance monitoring and system diagnostics.
+lsmem --summary #memory
+free -m
+lshw
+```
+runlevel 0 -> poweroff.target  
+
+runlevel 1 -> rescue.target  
+
+runlevel 2 -> multi-user.target  
+
+runlevel 3 -> multi-user.target  
+
+runlevel 4 -> multi-user.target  
+
+runlevel 5 -> graphical.target  
+
+runlevel 6 -> reboot.target  
+```bash
+runlevel # => 5 is gui => 3 is commandline
+systemctl get-default
+ls -ltr /etc/systemd/system/default.target
+/etc/systemd/system/default.target -> /usr/lib/systemd/system/graphical.target
+sudo systemctl set-default multi-user.target
+```
+---
+### Searching for files and dirs
+```bash
+locate test.file
+find /home/ -name test.file
+```
+update DB
+```bash
+updatedb
 ```
 
-### RPM Commands
+---
+### RPM Commands 
 ```bash
 rpm -qa
 rpm -qa | grep ftp
@@ -14,7 +189,22 @@ sudo rpm -e ftp-0.17-89.el9.x86_64
 sudo rpm -i /opt/ftp-0.17-89.el9.x86_64.rpm
 sudo yum list maven
 ```
-
+```bash
+rpm -qa | grep wget #version of wget using rpm
+```
+-q (query) → This option is used to query the RPM database.  
+-a (all) → This option lists all installed packages.  
+```bash
+sudo rpm -ivh firefox-115.12.0-1.el9.x86_64.rpm
+```
+-i is for install.  
+-v is for verbose, which gives you more information about the installation process.  
+-h is for hash, which shows a progress bar during installation.  
+# yum
+```bash
+sudo yum repolist
+sudo yum provides tcpdump #Which package provides the tcpdump command 
+```
 ### HTTPD Service Management
 ```bash
 sudo systemctl status httpd
@@ -119,3 +309,6 @@ JSON:
 cat q5.json | jpath $.car.wheels
 cat q13.json | jpath '$[?(@ == "car" || @ == "bike")]'
 ```
+
+
+
