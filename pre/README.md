@@ -1,6 +1,12 @@
 # Linux
 ---
-
+### Alias 
+```bash
+alias sshcentos='ssh abeer@centos'
+vi ~/.bash_profile #add alias sshcentos='ssh abeer@centos'
+source ~/.bash_profile 
+```
+---
 ### File size
 ```bash
 du -sh file.txt
@@ -308,14 +314,17 @@ ip addr add 192.168.1.10/24 dev eth0
 ip route 
 ip route add 192.168.1.0/24 via 192.168.2.1
 cat /proc/sys/net/ipv4/ip_forward
+ip r #defualt gateway
+traceroute
 ```
 
 ### DNS Configuration
 ```bash
 cat /etc/hosts
-cat /etc/resolv.conf 
+cat /etc/resolv.conf #DNS
 nslookup www.google.com
 dig www.google.com
+/etc/nsswitch.conf #Name Service Switch configuration file
 ```
 **8.8.8.8** dns google
 ### DNS Search Option
