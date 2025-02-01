@@ -366,6 +366,14 @@ JSON:
 cat q5.json | jpath $.car.wheels
 cat q13.json | jpath '$[?(@ == "car" || @ == "bike")]'
 ```
-
-
-
+---
+# User Management
+```bash
+useradd bob #add user
+passwd bob #add password to user bob
+whoami
+/etc/passwd #user details
+/etc/shadow #user password
+sudo groupadd -g 1010 john #add group
+ sudo useradd john -g john -s /bin/sh # -s for shell -g for group
+```
