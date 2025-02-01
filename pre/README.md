@@ -377,3 +377,11 @@ whoami
 sudo groupadd -g 1010 john #add group
  sudo useradd john -g john -s /bin/sh # -s for shell -g for group
 ```
+---
+# File Permissions and Ownership
+| **Permission**               | **Octal Value**                  |
+| ------------------------- | -------------------------------- |
+| `Read`    | 4 |
+| `Write`    | 2 |
+| `Execute`    | 1 |
+
