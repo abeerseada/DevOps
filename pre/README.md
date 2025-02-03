@@ -385,3 +385,235 @@ sudo groupadd -g 1010 john #add group
 | `Write`    | 2 |
 | `Execute`    | 1 |
 
+```bash
+chmod ugo+rwx testfile.txt # u => user, g => group, o => other, '+,-' 'r,w,x'
+chmod u+rwx,g+r,o-rwx testfile.txt
+chown bob:developer tetsfile.txt #change ownership
+chgrp andriod tetsfile.txt #change group
+sudo chown -R mercury /home/bob/sports
+```
+-R → Recursive mode, meaning it changes ownership for all files and subdirectories inside /home/bob/sports.
+---
+# Service Management in Linux
+
+Managing services in Linux is essential for ensuring system stability, performance, and reliability. This guide covers service management using **systemd (`systemctl`)** and **SysVinit (`service`)**.
+```bash
+sudo systemctl daemon-reload
+/etc/systemd/system/
+```
+
+Reloads systemd manager configuration without rebooting the system.  
+It is used when unit files (.service files) are modified, added, or removed.  
+Ensures that systemd recognizes changes made to service files  
+## 📌 Checking Service Status
+### **Using systemd**
+```bash
+systemctl status apache2
+```
+### **Using service (Older Systems)**
+```bash
+service apache2 status
+```
+
+## 🚀 Starting, Stopping, and Restarting Services
+### **Start a Service**
+```bash
+sudo systemctl start apache2
+```
+```bash
+sudo service apache2 start
+```
+
+### **Stop a Service**
+```bash
+sudo systemctl stop apache2
+```
+```bash
+sudo service apache2 stop
+```
+
+### **Restart a Service**
+```bash
+sudo systemctl restart apache2
+```
+```bash
+sudo service apache2 restart
+```
+
+### **Reload Service Configuration (Without Restarting)**
+```bash
+sudo systemctl reload apache2
+```
+
+## 🔄 Enable or Disable a Service at Boot
+### **Enable a Service to Start on Boot**
+```bash
+sudo systemctl enable apache2
+```
+
+### **Disable a Service from Starting on Boot**
+```bash
+sudo systemctl disable apache2
+```
+
+### **Check if a Service is Enabled at Boot**
+```bash
+systemctl is-enabled apache2
+```
+
+## 📋 Listing Services
+### **Show All Active Services**
+```bash
+systemctl list-units --type=service --state=running
+```
+
+### **Show All Services (Running & Stopped)**
+```bash
+systemctl list-units --type=service
+```
+
+## 📜 Viewing Logs
+### **View Logs of a Service**
+```bash
+journalctl -u apache2 --no-pager
+```
+
+### **Follow Logs in Real-time**
+```bash
+journalctl -u apache2 -f
+```
+
+## 🛠 Alternative: Managing Services with `service`
+For older Linux distributions using **SysVinit** or **Upstart**:
+```bash
+sudo service apache2 start   # Start service
+sudo service apache2 stop    # Stop service
+sudo service apache2 restart # Restart service
+sudo service apache2 status  # Check status
+```
+
+## 📝 Summary Table
+| Action | systemd (`systemctl`) | SysVinit (`service`) |
+|--------|----------------------|----------------------|
+| Start a service | `systemctl start apache2` | `service apache2 start` |
+| Stop a service | `systemctl stop apache2` | `service apache2 stop` |
+| Restart a service | `systemctl restart apache2` | `service apache2 restart` |
+| Check status | `systemctl status apache2` | `service apache2 status` |
+| Enable on boot | `systemctl enable apache2` | `chkconfig apache2 on` |
+| Disable on boot | `systemctl disable apache2` | `chkconfig apache2 off` |
+| View logs | `journalctl -u apache2` | `cat /var/log/syslog` |
+
+## 🎯 Conclusion
+- `systemctl` is used in **modern Linux** distributions.
+- `service` is for **older Linux** systems with SysVinit.
+- Always check logs with `journalctl -u <service>` if troubleshooting is needed.
+
+---
+# Passwordless SSH
+```bash 
+ssh-keygen -t rsa 
+```
+In `~/.ssh` you will find `id_rsa` and `id_rsa.pub`.  
+Now copy `id_rsa.pub` 
+```bash 
+ssh-copy-id -i ~/.ssh/id_rsa.pub abeer@remote-server
+```
+```bash
+cat ~/.ssh/authorized_keys
+```
+---
+# SCP
+### Copy Files from Local to Remote
+```bash
+# scp [options] source destination
+scp /home/abeer/file.txt remote-server:/home/user
+```
+### Copy Files from Remote to Local
+```bash
+scp user@remote-server:/home/user/file.txt /local/destination/
+```
+---
+### Which port number does the SSH service use by default? 
+```bash
+sudo netstat -tulnp | grep ssh
+```
+---
+# IPTables
+`iptables` is a firewall tool for Linux used to control network traffic by defining rules that allow or block packets based on IP addresses, ports, and protocols.
+```bash
+sudo iptables -L -v -n
+```
+`-L` → Lists all rules.  
+`-v` → Shows detailed output.  
+`-n` → Displays numerical addresses instead of resolving hostnames.  
+
+Allow Incoming SSH Traffic (Port 22)  
+```bash
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+``` 
+Block a Specific IP (e.g., 192.168.1.100)
+```bash
+sudo iptables -A INPUT -s 192.168.1.100 -j DROP
+```
+Allow All Outgoing Traffic
+```bash
+sudo iptables -A OUTPUT -j ACCEPT 
+```
+Block All Incoming Traffic by Default
+```bash
+sudo iptables -P INPUT DROP
+```
+Delete a Specific Rule (e.g., Rule #3 in INPUT Chain)
+```bash
+sudo iptables -D INPUT 3
+```
+Reset iptables to Default (Flush All Rules)
+```bash
+sudo iptables -F
+```
+### Saving and Restoring iptables Rules
+```bash
+sudo service iptables save
+sudo systemctl enable iptables
+```
+
+`-A` → Add rule. 
+`-P` → Protocol. 
+`-s` → Source. 
+`-d` → Destination. 
+`--dport` → Destination port. 
+`-j` → Action to take. 
+`-D` → Delete.
+`-I` → Insert on top.
+---
+# CRON
+Edit the crontab file:
+```bash 
+crontap -e
+```
+View the current user's crontab:
+```bash 
+crontab -l
+```
+Remove all cron jobs for the current user:
+```bash 
+crontab -r
+```
+List cron jobs for a specific user (as root):
+```bash 
+crontab -u username -l
+```
+
+```pgsql 
+* * * * * command-to-execute
+- - - - -
+| | | | |  
+| | | | +---- Day of the week (0 - 6) [Sunday = 0]  
+| | | +------ Month (1 - 12)  
+| | +-------- Day of the month (1 - 31)  
+| +---------- Hour (0 - 23)  
++------------ Minute (0 - 59)
+```
+```bash 
+cat /tmp/system-report.txt
+```
