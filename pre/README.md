@@ -616,4 +616,168 @@ crontab -u username -l
 ```
 ```bash 
 cat /tmp/system-report.txt
+tail var/log/syslog
+```
+---
+# Disk Partitions
+```bash
+lsblk
+gdisk /dev/sdb
+```
+---
+# File Systems in Linux
+
+Linux supports multiple file systems, each designed for different use cases, performance requirements, and compatibility. Below are some of the most common file systems used in Linux.
+
+## 1. Common Linux File Systems
+
+| File System | Description |
+|-------------|------------|
+| **ext4** | Most widely used Linux file system; improved performance and journaling over ext3. |
+| **ext3** | Older than ext4, supports journaling but slower performance. |
+| **ext2** | No journaling, used for USB drives and small partitions. |
+| **XFS** | High-performance journaling file system, good for large-scale data storage. |
+| **Btrfs** | Advanced file system with snapshot support, data integrity, and scalability. |
+| **ReiserFS** | Older file system with efficient small file storage (mostly replaced by ext4). |
+| **ZFS** | Advanced file system with data protection, used in enterprise and storage-heavy applications. |
+| **F2FS** | Flash-friendly file system optimized for SSDs. |
+| **VFAT** | Used for compatibility with Windows (FAT32 format). |
+| **NTFS** | Windows file system, supported in Linux via `ntfs-3g`. |
+| **exFAT** | Used for flash storage, better than FAT32, but lacks journaling. |
+
+## 2. Checking File System Type
+
+To check the file system of a partition, use:
+```sh
+df -T
+sudo blkid /dev/vdc
+```
+Example output:
+```
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/sda1      ext4  50G   20G  30G   40%  /
+```
+
+Another method:
+```sh
+lsblk -f
+```
+
+## 3. Creating a File System
+
+To format a partition with a specific file system:
+
+- **ext4:**
+  ```sh
+  sudo mkfs.ext4 /dev/sdX
+  ```
+- **XFS:**
+  ```sh
+  sudo mkfs.xfs /dev/sdX
+  ```
+- **Btrfs:**
+  ```sh
+  sudo mkfs.btrfs /dev/sdX
+  ```
+- **FAT32:**
+  ```sh
+  sudo mkfs.vfat -F 32 /dev/sdX
+  ```
+- **NTFS:**
+  ```sh
+  sudo mkfs.ntfs /dev/sdX
+  ```
+
+*(Replace `/dev/sdX` with the actual partition name.)*
+
+## 4. Mounting and Unmounting File Systems
+
+```bash
+sudo mkdir /mnt/data
+```
+- **Mount a partition:**
+  ```sh
+  sudo mount /dev/sdX /mnt
+  ```
+- **Unmount a partition:**
+  ```sh
+  sudo umount /dev/sdX
+  ```
+
+To automatically mount at boot, add an entry to `/etc/fstab`:
+```
+/dev/sdX  /mnt  ext4  defaults  0 2# File Systems in Linux
+```
+
+## 5. Checking and Repairing File Systems
+
+- **Check a file system:**
+  ```sh
+  sudo fsck /dev/sdX
+  ```
+- **Repair a file system:**
+  ```sh
+  sudo fsck -y /dev/sdX
+  ```
+
+## 6. Converting File Systems
+
+Some conversions are possible:
+- **ext3 to ext4:**
+  ```sh
+  sudo tune2fs -O extents,uninit_bg,dir_index /dev/sdX
+  ```
+- **FAT32 to NTFS (without data loss) (on Windows)**
+  ```sh
+  convert X: /FS:NTFS
+  ```
+
+## 7. Choosing the Right File System
+
+- **ext4:** Default choice for Linux desktops and servers.
+- **XFS:** Best for large-scale storage and high performance.
+- **Btrfs:** Good for snapshots, RAID, and data integrity.
+- **ZFS:** Best for enterprise storage, but requires extra configuration.
+- **F2FS:** Ideal for SSDs.
+
+---
+# LVM
+Logical Volume Manager
+Initialize a Disk or Partition as a PV
+```bash
+sudo pvcreate /dev/sdb 
+```
+Create a Volume Group
+```bash
+sudo vgcreate my_vg /dev/sdb
+```
+Create a Logical Volume
+```bash
+sudo lvcreate -L 20G -n my_lv my_vg
+```
+Format the Logical Volume
+```bash
+sudo mkfs.ext4 /dev/my_vg/my_lv
+```
+
+```bash
+sudo mkdir /mnt/lvm_storage
+sudo mount /dev/my_vg/my_lv /mnt/lvm_storage
+```
+
+```bash
+pvdisplay
+lvdisplay
+lvs
+```
+Extend the Logical Volume
+```bash
+sudo lvextend -L +10G /dev/my_vg/my_lv
+```
+Resize the Filesystem
+```bash
+sudo resize2fs /dev/my_vg/my_lv
+```
+```bash 
+dp -hP /mnt/lvm_storage
 ```
