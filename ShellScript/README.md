@@ -228,6 +228,8 @@ let Command in Bash (Arithmetic Operations)
 ```bash
 help let
 help test
+help [[ expression ]]
+echo $?
 ```
 `[ ]`	Basic tests (strings, files, numbers)
 `[[ ]]`	Advanced tests (pattern matching, string comparisons)
@@ -281,4 +283,20 @@ FUNCTION_NAME() {
 
 ```
 ---
+# pattern matching
+```bash
+[[ hello =~ el ]]
+```
+```bash
+QUESTION="test123"
 
+case $QUESTION in
+  test?) echo "Matched a single character after 'test'" ;;
+  test*) echo "Matched anything after 'test'" ;;
+  test[0-9]) echo "Matched a single digit after 'test'" ;;
+  *) echo "No match found" ;;
+esac
+#Matched anything after 'test' ✅
+```
+You can use regular expression characters as well, but you can't put the pattern in quotes when you do. Using the same syntax, check if **hello world** starts with an `h` by using **^h** as the pattern.  
+use **^h.+d$** as the pattern to see if the string starts with an `h`, has at least one character after it, and ends with a `d`.
