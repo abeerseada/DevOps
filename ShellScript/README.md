@@ -216,3 +216,69 @@ s/: Represents the substitute command.
 old: The substring to search for (in this case, .jpeg).  
 new: The replacement substring (in this case, .jpg).  
 g: Global flag, which means replace all occurrences in the input.  
+---
+```bash
+echo $((RANDOM%75))
+```
+One tiny problem, that calculation will give a number between 0 and 74. Enter the same command in the terminal, but add 1 to the calculation to get a random number between 1 and 75.  
+```bash
+echo $((RANDOM%75+1))
+```
+let Command in Bash (Arithmetic Operations)
+```bash
+help let
+help test
+```
+`[ ]`	Basic tests (strings, files, numbers)
+`[[ ]]`	Advanced tests (pattern matching, string comparisons)
+`(( ))`	Numerical comparisons (recommended for numbers)
+```
+# 📌 Differences Between `(( ... ))` and `[[ ... ]]` in Bash
+
+In Bash scripting, `(( ... ))` and `[[ ... ]]` are used for conditionals, but they serve different purposes.
+
+## **🔹 Key Differences**
+
+| **Comparison**        | **`(( ... ))`** (Arithmetic) | **`[[ ... ]]`** (General Test) |
+|----------------------|----------------|------------------|
+| **Usage**           | Used for **numeric** comparisons only | Used for **string, file, and numeric** comparisons |
+| **Operators**       | Supports `<=, >=, ==, !=, <, >` | Uses `-le, -ge, -eq, -ne, -lt, -gt` for numbers |
+| **Performance**     | ✅ Faster (optimized for numbers) | ❌ Slightly slower (supports multiple data types) |
+| **Math Operations** | ✅ Supports calculations | ❌ No arithmetic support |
+| **Logical Operators** | ✅ Supports `&&` and `||` directly | ❌ Requires `[ ]` for `&&` and `||` |
+| **Example Usage**   | `if (( x <= 10 )); then ... fi` | `if [[ $x -le 10 ]]; then ... fi` |
+
+## **✅ When to Use Each?**
+- Use **`(( ... ))`** for **numeric** operations and comparisons.
+- Use **`[[ ... ]]`** for **string comparisons, regex, and file checks**.
+
+```bash
+if (( NUMBER <= 15 )); then
+  echo "$TEXT B:$NUMBER"
+elif [[ $NUMBER -le 30 ]]; then
+  echo "$TEXT I:$NUMBER"
+fi
+```
+View the **help test** menu to see the operators you can use with the double square brackets
+---
+```bash
+echo -e "\n<txt>\n" 
+```
+---
+# Array
+```bash
+declare -a RESPONSES=("Yes" "No" "Maybe" "Outlook good" "Don't count on it" "Ask again later")
+declare -p RESPONSES
+echo ${RESPONSES[5]}
+```
+---
+# Function
+```bash
+FUNCTION_NAME() {
+  STATEMENTS
+}
+
+
+```
+---
+
