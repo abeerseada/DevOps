@@ -1,0 +1,7 @@
+Kubernetes/DevOps.code-workspace
+Jenkins/DevOps.code-workspace
+.idea/
+pre/NodeJS/node_modules/
+pre/NodeJS/package.json
+pre/NodeJS/package-lock.json
+pre/Python/venv

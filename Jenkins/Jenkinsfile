@@ -1,0 +1,81 @@
+// pipline {
+//     agent any 
+//     stages{
+//         stage ('Building')
+//         {
+//             agent{docker 'ubuntu:alpine'}
+//             steps{
+//                 sh 'mnv clean package'
+//             }
+//         }
+//         stage('unit testing')
+//         {
+//             steps{
+//                 script {junit 'target/surefire-reports/*xml'}
+//             }
+
+//         }
+//         stage('Deployment')
+//         {
+//             when { expression{branch == 'main'}}
+//             steps{
+//                 sh 'deploy.sh'
+//             }
+
+//         }
+//     }
+// }
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo 'Step 1: Checking out the repository...'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Step 2: Simulating Build Stage...'
+                sh 'echo "Building project..."'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Step 3: Simulating Test Stage...'
+                sh 'echo "Running tests..."'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Step 4: Simulating Package Stage...'
+                sh 'echo "Packaging project..."'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Step 5: Simulating Deploy Stage...'
+                sh 'echo "Deploying project..."'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+        success {
+            echo '🎉 Pipeline succeeded!'
+        }
+        failure {
+            echo '❌ Pipeline failed!'
+        }
+    }
+}
+
+
