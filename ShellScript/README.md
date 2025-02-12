@@ -300,3 +300,4 @@ esac
 ```
 You can use regular expression characters as well, but you can't put the pattern in quotes when you do. Using the same syntax, check if **hello world** starts with an `h` by using **^h** as the pattern.  
 use **^h.+d$** as the pattern to see if the string starts with an `h`, has at least one character after it, and ends with a `d`.
+
