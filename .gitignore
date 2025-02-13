@@ -5,3 +5,5 @@ pre/NodeJS/node_modules/
 pre/NodeJS/package.json
 pre/NodeJS/package-lock.json
 pre/Python/venv
+.vscode
+.idea

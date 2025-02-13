@@ -781,3 +781,17 @@ sudo resize2fs /dev/my_vg/my_lv
 ```bash 
 dp -hP /mnt/lvm_storage
 ```
+
+
+
+---
+# update time
+sudo yum install -y chrony
+
+sudo systemctl enable chronyd
+sudo systemctl start chronyd
+
+
+sudo chronyc tracking
+sudo chronyc sources -v
+---
