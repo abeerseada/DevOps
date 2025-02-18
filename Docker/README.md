@@ -525,3 +525,4 @@ docker volume ls
 | `docker inspect my_container` | Check **mounts inside a container** |
 
 ---
+
