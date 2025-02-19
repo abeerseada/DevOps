@@ -1,0 +1,29 @@
+version: "3"
+services:
+  redis:
+    image: redis
+  
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+  
+  vote:
+    image: dockersamples/examplevotingapp_vote
+    ports:
+      - 3030:80
+    depends_on:
+      - redis
+  
+  worker:
+    image: dockersamples/examplevotingapp_worker
+    depends_on:
+      - db
+      - redis
+  
+  result:
+    image: dockersamples/examplevotingapp_result
+    ports:
+      - 3031:80 
+    depends_on:
+      - db

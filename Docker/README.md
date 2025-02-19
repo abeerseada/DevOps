@@ -525,4 +525,178 @@ docker volume ls
 | `docker inspect my_container` | Check **mounts inside a container** |
 
 ---
+### **🛠 What is a Docker Service?**
+A **Docker Service** is a high-level abstraction in **Docker Swarm** that allows you to deploy and manage **containers** across multiple nodes in a **Swarm cluster**. It ensures **scalability, load balancing, and fault tolerance** for your applications.
+
+---
+
+## ✅ **1️⃣ Key Features of Docker Services**
+| **Feature** | **Description** |
+|------------|----------------|
+| **Scalability** | You can run multiple replicas of a service across nodes. |
+| **Load Balancing** | Requests are automatically distributed among replicas. |
+| **Fault Tolerance** | If a container fails, Swarm automatically restarts it. |
+| **Declarative Model** | You define the desired state, and Swarm ensures it is maintained. |
+
+---
+
+## ✅ **2️⃣ Types of Docker Services**
+### **🔹 Replicated Services**
+- Runs a **specific number of identical replicas** across nodes.
+- Example: **3 replicas of a web app**.
+  
+### **🔹 Global Services**
+- Runs **one instance per node** (useful for logging, monitoring, etc.).
+- Example: **A monitoring agent that runs on every node**.
+
+---
+
+## ✅ **3️⃣ Creating a Docker Service**
+You can create a service using the `docker service create` command.
+
+### **🔹 Example: Deploy a Simple Web Service**
+```bash
+docker service create --name my-web-app --replicas 3 -p 8080:80 nginx
+```
+📌 This:
+- Creates a **service named `my-web-app`**.
+- Runs **3 replicas** across available nodes.
+- Publishes **port 80 inside the container to port 8080** on the host.
+- Uses the **Nginx** image.
+
+---
+
+## ✅ **4️⃣ Managing Docker Services**
+### **🔹 List all services**
+```bash
+docker service ls
+```
+📌 Shows running services in the Swarm.
+
+### **🔹 Check details of a specific service**
+```bash
+docker service ps my-web-app
+```
+📌 Shows where the service is running.
+
+### **🔹 Scale a service**
+```bash
+docker service scale my-web-app=5
+```
+📌 Increases the number of replicas from 3 to **5**.
+
+### **🔹 Update a running service**
+```bash
+docker service update --image nginx:latest my-web-app
+```
+📌 Updates the service to use a new image version.
+
+### **🔹 Remove a service**
+```bash
+docker service rm my-web-app
+```
+📌 Stops and removes the service.
+
+---
+
+## ✅ **5️⃣ Difference Between a Container and a Service**
+| **Feature** | **Container (`docker run`)** | **Service (`docker service create`)** |
+|------------|----------------|----------------|
+| **Scope** | Runs on a single node | Runs across multiple nodes in Swarm |
+| **Scaling** | Must start containers manually | Can scale automatically (`--replicas`) |
+| **Fault Tolerance** | No built-in recovery | Automatically restarts failed tasks |
+| **Networking** | Uses bridge/host networks | Uses Swarm overlay networking |
+
+---
+
+## **🎯 Summary**
+| **Command** | **Description** |
+|------------|----------------|
+| `docker service create --name my-service --replicas 3 nginx` | Create a service with 3 replicas |
+| `docker service ls` | List all services in the Swarm |
+| `docker service ps my-service` | Show details of a service |
+| `docker service scale my-service=5` | Scale the service to 5 replicas |
+| `docker service update --image nginx:latest my-service` | Update the service to a new image |
+| `docker service rm my-service` | Remove the service |
+
+### kloudkode lab 
+```bash 
+docker node ls
+docker swarm init --advertise-addr 192.168.121.50 
+docker service create --name simple-web-app -e APP_COLOR=pink --replicas=3 -p 8083:8080 kodekloud/webapp-color
+docker service update --replicas 4 simple-web-app
+```
+---
+### ** Private Docker Registry with Frontend **
+
+🚀 **This project sets up a private Docker registry and a web frontend to manage images.**
+
+---
+
+## **1️⃣ Start the Private Docker Registry**
+```bash
+docker run -d -p 5000:5000 --restart always --name registry registry:2
+```
+📌 Runs a local Docker registry on port `5000`.
+
+---
+
+## **2️⃣ Push an Image to the Registry**
+```bash
+docker pull hello-world
+docker tag hello-world:latest localhost:5000/hello-world
+docker push localhost:5000/hello-world
+```
+📌 Pulls `hello-world`, tags it for the local registry, and pushes it.
+
+---
+
+## **3️⃣ Verify Images in the Registry**
+```bash
+docker exec -it registry /bin/sh
+ls /var/lib/registry
+```
+📌 Checks if the image is stored.
+
+---
+
+## **4️⃣ Remove and Re-Pull the Image**
+```bash
+docker rmi hello-world:latest localhost:5000/hello-world:latest
+docker pull localhost:5000/hello-world
+```
+📌 Deletes and pulls the image from the private registry.
+
+---
+
+## **5️⃣ Deploy a Web Frontend**
+```bash
+sudo docker run -d -e ENV_DOCKER_REGISTRY_HOST=registry \
+  -e ENV_DOCKER_REGISTRY_PORT=5000 -p 8080:80 \
+  --link registry:registry konradkleine/docker-registry-frontend:v2
+```
+📌 Starts a web UI for managing the registry at `http://localhost:8080`.
+
+---
+
+## **6️⃣ Manage the Registry**
+🔹 **List images in the registry**:
+```bash
+curl -X GET http://localhost:5000/v2/_catalog
+```
+🔹 **List tags of an image**:
+```bash
+curl -X GET http://localhost:5000/v2/hello-world/tags/list
+```
+🔹 **Delete an image from the registry**:
+```bash
+curl -X DELETE http://localhost:5000/v2/hello-world/manifests/$(docker manifest inspect localhost:5000/hello-world | jq -r .config.digest)
+```
+
+---
+
+## **🎯 Key Takeaways**
+✔ **Run your own private Docker registry**  
+✔ **Push & pull images securely**  
+✔ **Manage images with a web frontend**  
 
