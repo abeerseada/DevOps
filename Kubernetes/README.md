@@ -199,7 +199,7 @@ metadata:
 target:
   apiVersion: v1
   kind: Node
-  name: node-1  # اسم العقدة التي سيتم تشغيل الـ Pod عليها
+  name: node-1  
 ```
 ---
 # Taint and Tolerations
