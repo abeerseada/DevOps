@@ -174,6 +174,34 @@ Deletes the specified Services
 kubectl delete svc ‹svc-name>
 ```
 ---
+# pod binding
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  nodeSelector:
+    disktype: ssd
+  containers:
+    - name: nginx
+      image: nginx
+
+```
+
+`pod-bind-definition.yaml`
+```yaml
+apiVersion: v1
+kind: Binding
+metadata:
+  name: my-pod
+target:
+  apiVersion: v1
+  kind: Node
+  name: node-1  # اسم العقدة التي سيتم تشغيل الـ Pod عليها
+```
+---
 # Taint and Tolerations
 Taint:
 ```bash 
