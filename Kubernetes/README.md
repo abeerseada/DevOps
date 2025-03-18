@@ -203,17 +203,30 @@ target:
 ```
 ---
 # Taint and Tolerations
+Taints and Tolerations allow you to control which pods can be scheduled on a node by restricting placement.  
+
 Taint:
+A taint is applied to a node to repel pods that do not have a matching toleration  
 ```bash 
 kubectl taint nodes node1 key=value:taint-effect
 ```
-taint-effect:NoSchedule,PreferNoSchedule,NoExecute
+taint-effect:NoSchedule,PreferNoSchedule,NoExecute  
+`NoSchedule` → Pods without toleration won’t be scheduled.  
+`PreferNoSchedule` → Tries to avoid scheduling but not enforced.  
+`NoExecute` → Evicts running pods that don’t have toleration.  
+
+✅ Example: Taint node node01 to prevent scheduling unless tolerated:
+
+```sh
+kubectl taint nodes node01 mykey=myvalue:NoSchedule
+```
 to remove a taint :
 ```bash 
 kubectl taint nodes node1 key=value:taint-effect-
 ```
 Toleration:
-*added to spec section!*
+A toleration allows a pod to be scheduled on a tainted node.  
+*added to spec section!*  
 ```yaml
 tolerations:
 - key: "key"
@@ -221,6 +234,27 @@ tolerations:
   value: "value"
   effect: "NoSchedule"
 ```
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tolerant-pod
+spec:
+  tolerations:
+    - key: "mykey"
+      operator: "Equal"
+      value: "myvalue"
+      effect: "NoSchedule"
+  containers:
+    - name: nginx
+      image: nginx
+```
+✅ Now, tolerant-pod can be scheduled on node01 even though it has a taint.  
+
+🔥 When to Use Taints & Tolerations?
+`✅ Dedicated Nodes `→ Keep specific workloads on certain nodes
+`✅ Critical Workloads` → Ensure only certain pods run on important nodes
+`✅ Isolating Resources` → Prevent regular workloads from interfering with system-critical components
 ---
 # NodeSelectors
 ```bash

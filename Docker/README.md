@@ -699,4 +699,3 @@ curl -X DELETE http://localhost:5000/v2/hello-world/manifests/$(docker manifest 
 ✔ **Run your own private Docker registry**  
 ✔ **Push & pull images securely**  
 ✔ **Manage images with a web frontend**  
-
